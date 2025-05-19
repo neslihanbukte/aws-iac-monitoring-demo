@@ -1,0 +1,5 @@
+- hosts: flask_servers
+  become: true
+  roles:
+    - flask
+    - monitoring
