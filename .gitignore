@@ -1,0 +1,4 @@
+# terraform and terragrunt cache files
+.terraform/
+.terragrunt-cache/
+.terraform.lock.hcl
