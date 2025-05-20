@@ -31,6 +31,11 @@ resource "aws_instance" "web" {
     }
 }
 
+resource "aws_eip" "static" {
+  instance = aws_instance.web.id
+  vpc = true
+}
+
 output "public_ip" {
   value = aws_instance.web.public_ip
 }
