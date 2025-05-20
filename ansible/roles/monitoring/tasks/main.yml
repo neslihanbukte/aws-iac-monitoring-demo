@@ -1,39 +1,31 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - wget
+    - tar
+  become: true
+
 - name: Download Node Exporter
   get_url:
     url: https://github.com/prometheus/node_exporter/releases/download/v1.8.0/node_exporter-1.8.0.linux-amd64.tar.gz
     dest: /tmp/node_exporter.tar.gz
+  become: true
 
 - name: Extract Node Exporter
   unarchive:
     src: /tmp/node_exporter.tar.gz
     dest: /opt/
-    remote_src: yes
+    remote_src: true
+  become: true
 
 - name: Move Node Exporter binary
   command: mv /opt/node_exporter-1.8.0.linux-amd64/node_exporter /usr/local/bin/
-  become: yes
+  become: true
 
-- name: Create node_exporter systemd service
-  copy:
-    dest: /etc/systemd/system/node_exporter.service
-    content: |
-      [Unit]
-      Description=Node Exporter
-      After=network.target
-
-      [Service]
-      ExecStart=/usr/local/bin/node_exporter
-      User=nobody
-      Group=nogroup
-
-      [Install]
-      WantedBy=multi-user.target
-  become: yes
-
-- name: Reload systemd and start node_exporter
-  systemd:
-    daemon_reload: yes
-    name: node_exporter
-    enabled: yes
-    state: started
-  become: yes
+- name: Run Node Exporter in background (simple test mode)
+  shell: nohup /usr/local/bin/node_exporter > /tmp/node_exporter.log 2>&1 &
+  args:
+    executable: /bin/bash
