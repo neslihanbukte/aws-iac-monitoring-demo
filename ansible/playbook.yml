@@ -1,4 +1,5 @@
-- hosts: flask_servers
+- name: deploy flask app and monitoring
+  hosts: flask_servers
   become: true
   roles:
     - flask
