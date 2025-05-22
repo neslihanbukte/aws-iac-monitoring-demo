@@ -7,6 +7,7 @@
 
   tasks:
 
+    # Flask kurulumu
     - name: Install python3 and pip
       dnf:
         name:
@@ -53,6 +54,7 @@
         enabled: true
         state: started
 
+    # Node Exporter kurulumu
     - name: Install required packages for Node Exporter
       dnf:
         name: "{{ item }}"
@@ -72,7 +74,7 @@
         dest: /opt/
         remote_src: true
 
-    - name: Move Node Exporter binary if not already present
+    - name: Move Node Exporter binary
       command: mv /opt/node_exporter-1.8.0.linux-amd64/node_exporter /usr/local/bin/
       args:
         creates: /usr/local/bin/node_exporter
@@ -99,5 +101,34 @@
     - name: Enable and start node_exporter
       systemd:
         name: node_exporter
+        enabled: true
+        state: started
+
+    # Grafana kurulumu
+    - name: Add Grafana RPM key
+      rpm_key:
+        key: https://packages.grafana.com/gpg.key
+        state: present
+
+    - name: Add Grafana YUM repository (manually)
+      copy:
+        dest: /etc/yum.repos.d/grafana.repo
+        content: |
+          [grafana]
+          name=Grafana OSS
+          baseurl=https://packages.grafana.com/oss/rpm
+          repo_gpgcheck=1
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.grafana.com/gpg.key
+
+    - name: Install Grafana
+      dnf:
+        name: grafana
+        state: present
+
+    - name: Enable and start Grafana service
+      systemd:
+        name: grafana-server
         enabled: true
         state: started
