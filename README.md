@@ -8,6 +8,7 @@ This project demonstrates how to provision AWS infrastructure using Terragrunt a
 - Launch a **t2.micro EC2 instance** inside the VPC.
 - Use **Ansible** to install a simple Flask application on the EC2 instance.
 - Configure **Prometheus** and **Grafana** to monitor the EC2 instance (CPU, memory, etc.).
+- Scheduling automated tasks on the EC2 instance via a cron job (time-based scheduling).
 
 ## Key Features
 
@@ -15,6 +16,14 @@ This project demonstrates how to provision AWS infrastructure using Terragrunt a
 - Fully automated deployment — no manual AWS Console actions.
 - Simple Flask app deployment via **Ansible**.
 - Monitoring setup with **Prometheus + Grafana** for resource metrics.
+- Automated **EC2 instance start/stop scheduling** to optimize costs and resource usage.
+
+## Prerequisites
+
+1. AWS CLI configured with credentials and default region.
+2. Terraform & Terragrunt installed on your local machine.
+3. Ansible installed locally to run playbooks.
+4. SSH keypair configured in aws and accessible locally.
 
 ## Getting Started
 
@@ -30,5 +39,3 @@ This project demonstrates how to provision AWS infrastructure using Terragrunt a
 - Ansible installed
 
 ---
-
-Feel free to expand this README as the project grows!
